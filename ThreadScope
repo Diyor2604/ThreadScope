@@ -1,0 +1,50 @@
+class ThreadScope extends ThreadLocal<String>{
+	
+}
+class A{
+	void m1() {
+		//System.out.println("m1()"+Thread.currentThread().getName()+" Scope"); it is just sample way to set the name and get it
+		System.out.println("Thread -1 m1()"+Thread1.th1.get());
+	}
+	void m2() {
+		//System.out.println("m2()"+Thread.currentThread().getName()+" Scope"); it is the sampleway 
+		System.out.println("Thread -2 m2()"+Thread2.th2.get());
+	}
+}
+class Thread1 extends Thread{
+	static ThreadScope th1=new ThreadScope();
+	A a;
+	Thread1(A a){
+		this.a=a;
+	}
+	public void run() {
+		th1.set("AAA");//setting the Thread scope name
+		a.m1();
+	}
+}
+class Thread2 extends Thread{
+	static ThreadScope th2=new ThreadScope();
+	A a;
+	Thread2(A a){
+		this.a=a;
+	}
+	public void run() {
+		th2.set("BBB");
+		a.m2();
+	}
+}
+public class main {
+public static void main(String[] args)throws Exception{
+A a=new A();
+Thread1 t1=new Thread1(a);
+Thread2 t2=new Thread2(a);
+
+
+t1.start();
+t2.start();
+}
+}
+
+
+
+
